@@ -30,6 +30,81 @@
 </template>
 <script type="text/ecmascript-6">
 
+  const TIPS = {
+    PLAY: {
+      KEY: 1001,
+      STYLES: 'iconfont icon-iconbofangqibofang font-size-control',
+      WORDS: '开始播放...',
+      LOG: ''
+    },
+    PAUSE: {
+      KEY: 1002,
+      STYLES: 'iconfont icon-iconbofangqizanting font-size-control',
+      WORDS: '已暂停',
+      LOG: ''
+    },
+    ABORT: {
+      KEY: 1003,
+      STYLES: 'iconfont icon-tingzhi font-size-control',
+      WORDS: '停止加载',
+      LOG: ''
+    },
+    LOADSTART: {
+      KEY: 1004,
+      STYLES: '',
+      WORDS: '正在连接，请稍候...',
+      LOG: '开始请求数据...loadstart'
+    },
+    ERROR: {
+      KEY: 1005,
+      STYLES: 'iconfont icon-iconbofangqizanting font-size-control',
+      WORDS: '',
+      LOG: ''
+    },
+    CANPLAY: {
+      KEY: 1006,
+      STYLES: 'iconfont icon-iconbofangqizanting font-size-control',
+      WORDS: '准备就绪，请按下播放按钮以播放',
+      LOG: '可以播放音频/视频canplay'
+    },
+    CANPLAYTHROUGH: {
+      KEY: 1007,
+      STYLES: '',
+      WORDS: '准备就绪，请按下播放按钮以播放',
+      LOG: '可在不因缓冲而停顿的情况下进行播放canplaythrough'
+    },
+    LOADEDDATA: {
+      KEY: 1008,
+      STYLES: '',
+      WORDS: '',
+      LOG: '已加载音频/视频的当前帧loadeddata'
+    },
+    LOADEDMETADATA: {
+      KEY: 1008,
+      STYLES: '',
+      WORDS: '',
+      LOG: '已加载音频/视频的元数据loadedmetadata'
+    },
+    PLAYING: {
+      KEY: 1009,
+      STYLES: 'iconfont icon-iconbofangqibofang font-size-control',
+      WORDS: '正在播放...',
+      LOG: '音频/视频在已因缓冲而暂停或停止后已就绪playing'
+    },
+    STALLED: {
+      KEY: 1010,
+      STYLES: '',
+      WORDS: '',
+      LOG: '尝试获取媒体数据，但数据不可用。stalled'
+    },
+    WAITING: {
+      KEY: 1011,
+      STYLES: 'iconfont icon-tingzhi font-size-control',
+      WORDS: '已停止',
+      LOG: '由于需要缓冲下一帧而停止waiting'
+    }
+  }
+
   export default {
     name: 'audioplayer',
     props: {
@@ -37,7 +112,11 @@
         type: Object,
         default () {
           return {
-            src: ''
+            src: '',
+            isLive: {
+              type: Boolean,
+              default: false
+            }
           }
         }
       }
@@ -58,23 +137,23 @@
         console.log('status has changed: ---', this.status)
         switch (this.status) {
           case 'play':
-            this.$refs.btnImg.className = 'iconfont icon-iconbofangqibofang font-size-control'
-            this.$refs.playInfo.innerText = '开始播放流媒体...'
+            this.$refs.btnImg.className = TIPS.PLAY.STYLES
+            this.$refs.playInfo.innerText = TIPS.PLAY.WORDS
             this.readyStatus = this.$refs.media.readyState
             break
           case 'pause':
             this.$refs.media.pause()
-            this.$refs.btnImg.className = 'iconfont icon-iconbofangqizanting font-size-control'
-            this.$refs.playInfo.innerText = '已暂停'
+            this.$refs.btnImg.className = TIPS.PAUSE.STYLES
+            this.$refs.playInfo.innerText = TIPS.PAUSE.WORDS
             this.readyStatus = this.$refs.media.readyState
             break
           case 'abort':
-            this.$refs.btnImg.className = 'iconfont icon-tingzhi font-size-control'
-            this.$refs.playInfo.innerText = '停止加载'
+            this.$refs.btnImg.className = TIPS.ABORT.STYLES
+            this.$refs.playInfo.innerText = TIPS.ABORT.WORDS
             break
           case 'loadstart':
-            console.log('开始请求数据...loadstart', new Date())
-            this.$refs.playInfo.innerText = '正在连接，请稍候...'
+            console.log(TIPS.LOADSTART.LOG, new Date())
+//            this.$refs.playInfo.innerText = TIPS.LOADSTART.WORDS
             break
           case 'error':
             console.log('error', new Date())
@@ -88,44 +167,46 @@
             } else if (this.$refs.media.error.code === 4) {
               this.$refs.playInfo.innerText = 'URL无效'
             }
-            this.$refs.btnImg.className = 'iconfont icon-iconbofangqizanting font-size-control'
+            this.$refs.btnImg.className = TIPS.ERROR.STYLES
             break
           case 'canplay':
-            console.log('可以播放音频/视频canplay', new Date())
-            this.$refs.btnImg.className = 'iconfont icon-iconbofangqizanting font-size-control'
-            this.$refs.playInfo.innerText = '准备就绪，请按下播放按钮以播放'
+            console.log(TIPS.CANPLAY.LOG, new Date())
+            this.$refs.btnImg.className = TIPS.CANPLAY.STYLES
+            this.$refs.playInfo.innerText = TIPS.CANPLAY.WORDS
             this.$refs.isPlay = false
             break
           case 'canplaythrough':
-            console.log('可在不因缓冲而停顿的情况下进行播放canplaythrough', new Date())
+            console.log(TIPS.CANPLAYTHROUGH.LOG, new Date())
+//            this.$refs.btnImg.className = TIPS.CANPLAY.STYLES
+//            this.$refs.playInfo.innerText = TIPS.CANPLAY.WORDS
 //							that.isPlay = false;
             break
           case 'loadeddata':
-            console.log('已加载音频/视频的当前帧loadeddata', new Date())
+            console.log(TIPS.LOADEDDATA.LOG, new Date())
             this.isPlay = false
 //	                        that.playInfo.innerText = '已加载媒体当前帧';
             break
           case 'loadedmetadata':
-            console.log('已加载音频/视频的元数据loadedmetadata', new Date())
+            console.log(TIPS.LOADEDMETADATA.LOG, new Date())
             this.isPlay = false
 //	                        that.playInfo.innerText = '已加载媒体元数据';
             break
           case 'playing':
-            console.log('音频/视频在已因缓冲而暂停或停止后已就绪playing', new Date())
-            this.$refs.playInfo.innerText = '正在直播...'
+            console.log(TIPS.PLAYING.LOG, new Date())
+            this.$refs.playInfo.innerText = TIPS.PLAYING.WORDS
             this.isPlay = true
-            this.$refs.btnImg.className = 'iconfont icon-iconbofangqibofang font-size-control'
+            this.$refs.btnImg.className = TIPS.PLAYING.STYLES
 
 //	                        this.$refs.btnImg.src = 'images/playerImg/player_pause.png'
             break
           case 'stalled':
-            console.log('尝试获取媒体数据，但数据不可用。stalled', new Date())
+            console.log(TIPS.STALLED.LOG, new Date())
             //that.playInfo.innerText = '正在缓冲...'
             break
           case 'waiting':
-            console.log('由于需要缓冲下一帧而停止waiting', new Date())
-            this.$refs.playInfo.innerText = '已停止'
-            this.$refs.btnImg.className = 'iconfont icon-tingzhi font-size-control'
+            console.log(TIPS.WAITING.LOG, new Date())
+            this.$refs.playInfo.innerText = TIPS.WAITING.WORDS
+            this.$refs.btnImg.className = TIPS.WAITING.STYLES
             this.isPlay = false
             break
           default:
@@ -135,7 +216,7 @@
         console.log('readyStatus has changed: ---', this.readyStatus)
         switch (this.readyStatus) {
           case 0:
-            this.$refs.playInfo.innerText = '流媒体错误，请点击右侧按钮刷新'
+            this.$refs.playInfo.innerText = '媒体错误，请点击右侧按钮刷新'
             this.$refs.btnImg.className = 'iconfont icon-iconbofangqizanting font-size-control'
             this.isPlay = false
             console.log('media.readyState === 0, 没有关于音频/视频是否就绪的信息', '没有直播流')
@@ -146,9 +227,9 @@
             console.log('media.readyState === 1, 音频/视频以初始化')
             break
           case 2:
-            this.$refs.playInfo.innerText = '无直播流'
+            this.$refs.playInfo.innerText = '无音频流'
             this.isPlay = false
-            this.$refs.btnImg.className = 'iconfont icon-iconbofangqizanting font-size-control'
+//            this.$refs.btnImg.className = 'iconfont icon-iconbofangqizanting font-size-control'
             console.log('media.readyState === 2, 数据已经可以播放(当前位置已经加载) 但没有数据能播放下一帧的内容')
             break
           case 3:

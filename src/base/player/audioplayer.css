@@ -1,7 +1,7 @@
 .audioplayer {
 	/*margin: 10px 0;*/
-	height: 2.0em; /* 40 */
-	line-height: 2em;
+	height: 100%; /* 40 */
+	line-height: 100%;
 	color: #fff;
 	/*border: 1px solid #ccc;*/
 	position: relative;
@@ -123,8 +123,8 @@
 	cursor: pointer;
 	z-index: 1;
 	/*top: 50%;*/
-	right: 5.875em; /* 110 */
-	left: 5.875em; /* 110 */
+	right: 7.875em; /* 110 */
+	left: 7.875em; /* 110 */
 	/*margin-top: -0.438em; !* 7 *!*/
 }
 

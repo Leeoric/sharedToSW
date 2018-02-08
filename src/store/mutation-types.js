@@ -1,0 +1,1 @@
+export const SET_MEETING_INFO = 'SET_MEETING_INFO'

@@ -1,8 +1,4 @@
-/*
-	By Osvaldas Valutis, www.osvaldas.info
-	Available for use under the MIT License
-*/
-/* es-lint disable */
+/* eslint-disable */
 (function ($, window, document, undefined) {
   var isTouch = 'ontouchstart' in window,
     eStart = isTouch ? 'touchstart' : 'mousedown',
