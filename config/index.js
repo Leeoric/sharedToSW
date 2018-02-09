@@ -12,7 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://10.102.16.202:8080',//设置你调用的接口域名和端口号 别忘了加http
+        // target: 'http://10.102.16.202:8080',//设置你调用的接口域名和端口号 别忘了加http
+        target: 'http://3c-share.wind.com.cn',//设置你调用的接口域名和端口号 别忘了加http
         changeOrigin: true,
         pathRewrite: {
           //这里理解成用‘/api’代替target里面的地址，后面组件中我们掉接口时直接用api代替
